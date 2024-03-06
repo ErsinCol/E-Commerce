@@ -1,20 +1,24 @@
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+import 'dotenv/config'
+import './clients/mongo.js'
+import express from "express"
+import cookieParser from "cookie-parser"
+import logger from "morgan"
+import cors from "cors"
+import swaggerUi from "swagger-ui-express"
+import swaggerSpec from "./helpers/swaggerSpec.js";
+import routes from "./routes/index.js"
+import errMiddleware from "./middleware/error.js";
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+const app = express();
 
-var app = express();
-
+app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use(routes)
+app.use("/api-doc", swaggerUi.serve, swaggerUi.setup(swaggerSpec))
+app.use(errMiddleware)
 
-module.exports = app;
+export default app;

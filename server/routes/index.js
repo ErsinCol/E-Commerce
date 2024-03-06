@@ -1,9 +1,29 @@
-var express = require('express');
-var router = express.Router();
+import {Router} from "express";
+const router = Router();
 
-/* GET home page. */
+// routes
+import auth from "./auth.js";
+
+/**
+* @openapi
+* /:
+*   get:
+*     summary: Get a greeting message
+*     description: Get a greeting message
+*     responses:
+*       200:
+*         description: Successful response with a greeting message
+*         content:
+*           text/plain:
+*             schema:
+*               type: string
+*       500:
+*         description: Internal server error
+*/
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.send("Hello.");
 });
 
-module.exports = router;
+router.use("/auth", auth);
+
+export default router;
