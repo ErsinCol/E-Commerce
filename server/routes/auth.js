@@ -34,4 +34,37 @@ const router = Router();
 
 router.post("/register", auth.Register);
 
+/**
+* @openapi
+* /auth/login:
+*   post:
+*      tags:
+*         - Auth
+*      summary: User login
+*      description: Authenticate and login a user
+*      requestBody:
+*           description: User credentials for login
+*           required: true
+*           content:
+*               application/json:
+*                   schema:
+*                       $ref: '#/components/schemas/User'
+*                   example:
+*                       email: example@example.com
+*                       password: '123456'
+*      responses:
+*           '200':
+*               description: User authenticated successfully
+*           '400':
+*               description: Bad request, validation error
+*           '404':
+ *              description: User not found
+*           '401':
+*               description: Unauthorized, invalid credentials
+*           '500':
+*               description: Internal server error
+*
+*/
+router.post("/login", auth.Login);
+
 export default router;

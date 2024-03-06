@@ -1,11 +1,11 @@
 import User from "../../models/user.js";
-import {RegisterSchema} from "./validation.js";
+import ValidationSchema from "./validation.js";
 import {signAccessToken, signRefreshToken} from "../../helpers/jwt.js";
 
 const Register = async (req, res, next) => {
     const input = req.body;
 
-    const {error} = RegisterSchema.validate(input);
+    const {error} = ValidationSchema.validate(input);
 
     if(error) res.status(400).send(error.details[0].message)
 
@@ -39,6 +39,40 @@ const Register = async (req, res, next) => {
     }
 }
 
+const Login = async (req, res, next)=> {
+    const input = req.body;
+
+    const {error} = ValidationSchema.validate(input);
+
+    if(error) res.status(400).send(error.details[0].message)
+
+    try{
+        const user = await User.findOne({email: input.email});
+
+        if(!user) res.status(404).send("The email address was not found.");
+
+        const isMatched = await user.isValidPassword(input.password);
+
+        if(!isMatched) res.status(401).send("Password not correct.");
+
+        const accessToken = await signAccessToken({
+            userId: user._id,
+            role: user.role
+        })
+
+        const refreshToken = await signRefreshToken(user._id)
+
+        const userData = await user.toObject();
+        delete userData.password;
+        delete userData.__v;
+
+        res.status(200).json({ user: userData, accessToken, refreshToken });
+    }catch(e){
+        next(e);
+    }
+}
+
 export default {
-    Register
+    Register,
+    Login
 }
