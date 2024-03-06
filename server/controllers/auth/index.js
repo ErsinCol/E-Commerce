@@ -10,7 +10,7 @@ const Register = async (req, res, next) => {
     if(error) res.status(400).send(error.details[0].message)
 
     try{
-        const isExist = await User.finsdOne({email: input.email});
+        const isExist = await User.findOne({email: input.email});
 
         if(isExist) res.status(409).send("This email already using.")
 

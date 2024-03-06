@@ -7,32 +7,28 @@ const router = Router();
 * @openapi
 * /auth/register:
 *   post:
+*     tags:
+*       - Auth
 *     summary: Register a new user
 *     description: Register a new user
 *     requestBody:
+*       description: Register a new user
 *       required: true
 *       content:
 *         application/json:
 *           schema:
-*             type: object
-*             properties:
-*                  email:
-*                      type: string
-*                      description: Email of the user
-*                  password:
-*                      type: string
-*                      description: Password of the user
+*             $ref: '#/components/schemas/User'
 *           example:
 *             email: example@example.com
 *             password: '123456'
 *     responses:
-*       200:
+*       '201':
 *         description: User registered successfully
-*       400:
+*       '400':
 *         description: Bad request, validation error
-*       409:
+*       '409':
 *         description: Conflict, email already exists
-*       500:
+*       '500':
 *         description: Internal server error
 */
 

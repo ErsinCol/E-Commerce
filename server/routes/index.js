@@ -8,6 +8,8 @@ import auth from "./auth.js";
 * @openapi
 * /:
 *   get:
+*     tags:
+*       - Greeting
 *     summary: Get a greeting message
 *     description: Get a greeting message
 *     responses:
