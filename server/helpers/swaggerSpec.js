@@ -29,7 +29,36 @@ const options = {
                             description: "Password of the user"
                         }
                     },
-                }
+                },
+                Product: {
+                    type: Object,
+                    properties: {
+                        title: {
+                            type: String,
+                            description: "Title of product",
+                        },
+                        description: {
+                            type: String,
+                            description: "Description of product"
+                        },
+                        price: {
+                            type: Number,
+                            description: "Price of product"
+                        },
+                        photos:{
+                            type: Array,
+                            items: {
+                                type: String
+                            }
+                        },
+                        createdAt: {
+                            type: String,
+                            format: Date,
+                            description: "Created date of product"
+                        },
+                    },
+                    required: ["title", "price"]
+                },
             }
         },
     },
