@@ -31,7 +31,6 @@ const router = Router();
 *       '500':
 *         description: Internal server error
 */
-
 router.post("/register", auth.Register);
 
 /**
@@ -94,5 +93,32 @@ router.post("/login", auth.Login);
  *                  description: Internal server error.
  * */
 router.post("/logout", auth.Logout);
+
+/**
+ * @openapi
+ * /auth/refresh_token:
+ *      post:
+ *          tags:
+ *              - Auth
+ *          summary: Refresh session
+ *          description: Refresh session with refresh token
+ *          requestBody:
+ *              required: true
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              refresh_token:
+ *                                  type: string
+ *          responses:
+ *              '200':
+ *                  description: Session successfully refreshed
+ *              '400':
+ *                  description: Invalid or missing refresh token
+ *              '500':
+ *                  description: Internal server error
+ * */
+router.post("/refresh_token", auth.RefreshToken);
 
 export default router;

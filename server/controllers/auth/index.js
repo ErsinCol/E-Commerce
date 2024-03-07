@@ -97,8 +97,32 @@ const Logout = async(req, res, next)=>{
     }
 }
 
+const RefreshToken = async(req, res, next)=>{
+    try{
+        const {refresh_token} = req.body;
+
+        if(!refresh_token) return res.status(400).send("Missing refresh token.");
+
+        verifyRefreshToken(refresh_token)
+            .then(async(userId) =>{
+                const accessToken = await signAccessToken(userId);
+                const refreshToken = await signRefreshToken(userId);
+                return res.status(200).json({
+                    accessToken,
+                    refreshToken
+                })
+            })
+            .catch((err)=>{
+                return res.status(400).json(err);
+            })
+    }catch (e){
+        next(e);
+    }
+}
+
 export default {
     Register,
     Login,
     Logout,
+    RefreshToken,
 }
