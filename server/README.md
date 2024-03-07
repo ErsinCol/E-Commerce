@@ -10,6 +10,7 @@
 
 ## Product Endpoint
 
-| Endpoint    | Description     | Methods |
-|-------------|-----------------|---------|
-| `/product`  | Retrieve products | GET     |
+| Endpoint    | Description          | Methods |
+|-------------|----------------------|---------|
+| `/product`  | Retrieve products    | GET     |
+| `/product`  | Create a new product | POST    |

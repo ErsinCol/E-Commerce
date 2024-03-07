@@ -1,4 +1,5 @@
 import Product from "../../models/product.js";
+import ProductSchema from "./validations.js";
 
 const limit = 12;
 const GetList = async (req, res, next)=>{
@@ -17,6 +18,28 @@ const GetList = async (req, res, next)=>{
     }
 }
 
+const Create = async(req, res, next)=>{
+    const input = req.body;
+
+    const {error} = ProductSchema.validate(input);
+
+    if(error) return res.status(400).send(error.details[0].message);
+
+    try{
+        if(input.photos){
+            input.photos = JSON.parse(input.photos);
+        }
+
+        const product = new Product(input);
+        const savedData = await product.save();
+
+        res.status(201).json(savedData);
+    }catch (e) {
+        next(e);
+    }
+}
+
 export default {
     GetList,
+    Create,
 }
