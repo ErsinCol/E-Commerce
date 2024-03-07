@@ -1,4 +1,5 @@
 import swaggerJsdoc from "swagger-jsdoc";
+import http from "node:http";
 
 const options = {
     definition: {
@@ -8,6 +9,13 @@ const options = {
             version: '1.0.0',
         },
         components: {
+            securitySchemes: {
+                bearerAuth: {
+                    type: 'http',
+                    scheme: 'bearer',
+                    bearerFormat: 'JWT'
+                }
+            },
             schemas: {
                 User : {
                     type: Object,
@@ -23,7 +31,7 @@ const options = {
                     },
                 }
             }
-        }
+        },
     },
     apis: ['./routes/*.js'],
 };

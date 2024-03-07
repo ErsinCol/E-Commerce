@@ -1,5 +1,6 @@
 import {Router} from "express";
 import auth from "../controllers/auth/index.js";
+import {verifyAccessToken} from "../helpers/jwt.js";
 
 const router = Router();
 
@@ -121,4 +122,35 @@ router.post("/logout", auth.Logout);
  * */
 router.post("/refresh_token", auth.RefreshToken);
 
+/**
+ * @openapi
+ * /auth/me:
+ *      get:
+ *          summary: Get current user data
+ *          description: Retrieves the data of the currently authenticated user.
+ *          security:
+ *              - bearerAuth: []
+ *          tags:
+ *              - Auth
+ *          responses:
+ *               '200':
+ *                  description: User data retrieved
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              type: object
+ *                              properties:
+ *                                  _id:
+ *                                      type: string
+ *                                  email:
+ *                                      type: string
+ *                                  role:
+ *                                      type: string
+ *                                      enum: [user, admin]
+ *               '401':
+ *                  description: Authentication credentials are missing or invalid
+ *               '500':
+ *                  description: Internal server error
+ * */
+router.get("/me", verifyAccessToken, auth.Me);
 export default router;

@@ -22,6 +22,27 @@ const signAccessToken = (data)=>{
     })
 }
 
+const verifyAccessToken = (req, res, next) =>{
+    const token = req.headers["authorization"];
+
+    if(!token) return res.status(401).send("Authorization failed. Token not found.")
+
+    jwt.verify(
+        token.split(" ")[1],
+        process.env.JWT_SECRET,
+        {
+            expiresIn: "10d",
+            issuer: "ecommerce.app",
+        },
+        (err, decoded)=>{
+            if(err) return res.status(401).send(err.message);
+
+            req.payload = decoded;
+            next();
+        }
+    )
+}
+
 const signRefreshToken = (userId) =>{
     return new Promise((resolve, reject)=>{
         const payload = {
@@ -71,9 +92,9 @@ const verifyRefreshToken = async (refreshToken)=>{
     })
 }
 
-
 export {
     signAccessToken,
+    verifyAccessToken,
     signRefreshToken,
     verifyRefreshToken,
 }

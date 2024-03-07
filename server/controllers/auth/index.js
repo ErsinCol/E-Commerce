@@ -120,9 +120,22 @@ const RefreshToken = async(req, res, next)=>{
     }
 }
 
+const Me = async(req, res, next)=>{
+    try{
+        const { userId } = req.payload;
+
+        const user = await User.findById(userId).select('-password -__v');
+
+        res.status(200).json(user);
+    }catch(e){
+        next(e);
+    }
+}
+
 export default {
     Register,
     Login,
     Logout,
     RefreshToken,
+    Me,
 }
