@@ -58,7 +58,7 @@ router.post("/register", auth.Register);
 *           '400':
 *               description: Bad request, validation error
 *           '404':
- *              description: User not found
+*               description: User not found
 *           '401':
 *               description: Unauthorized, invalid credentials
 *           '500':
@@ -66,5 +66,33 @@ router.post("/register", auth.Register);
 *
 */
 router.post("/login", auth.Login);
+
+/**
+ * @openapi
+ * /auth/logout:
+ *      post:
+ *          tags:
+ *              - Auth
+ *          summary: User logout
+ *          description: Logs out the user by invalidating the provided refresh token.
+ *          requestBody:
+ *              required: true
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              refresh_token:
+ *                                  type: string
+ *                                  description: Refresh token to be used for logout.
+ *          responses:
+ *              '200':
+ *                  description: User successfully logout.
+ *              '400':
+ *                  description: Bad request. Invalid or missing refresh token.
+ *              '500':
+ *                  description: Internal server error.
+ * */
+router.post("/logout", auth.Logout);
 
 export default router;

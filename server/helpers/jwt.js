@@ -14,7 +14,7 @@ const signAccessToken = (data)=>{
 
         jwt.sign(payload, process.env.JWT_SECRET, options, (err, token)=>{
             if(err){
-                reject(err);
+                return reject(err);
             }
 
             resolve(token);
@@ -33,9 +33,9 @@ const signRefreshToken = (userId) =>{
             issuer: "ecommerce.app",
         };
 
-        jwt.sign(payload, process.env.JWT_SECRET, options, (err, token)=>{
+        jwt.sign(payload, process.env.JWT_REFRESH_SECRET, options, (err, token)=>{
             if(err){
-                reject(err);
+                return reject(err);
             }
 
             const userIdStr = userId.toString();
@@ -47,8 +47,33 @@ const signRefreshToken = (userId) =>{
     })
 }
 
+const verifyRefreshToken = async (refreshToken)=>{
+    return new Promise((resolve, reject)=>{
+        jwt.verify(
+            refreshToken,
+            process.env.JWT_REFRESH_SECRET,
+            {
+                expiresIn: "180d",
+                issuer: "ecommerce.app",
+            },
+            async(err, decoded)=>{
+                if(err) return reject(err);
+
+                const {userId} = decoded;
+
+                const userToken = await client.get(userId);
+
+                if(!userToken) return reject(new Error("Invalid refresh token."));
+
+                if(refreshToken === userToken) resolve(userId);
+            }
+        )
+    })
+}
+
 
 export {
     signAccessToken,
     signRefreshToken,
+    verifyRefreshToken,
 }
