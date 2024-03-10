@@ -18,6 +18,22 @@ const GetList = async (req, res, next)=>{
     }
 }
 
+const Get = async(req, res, next) =>{
+    const { productId } = req.params;
+
+    if(!productId) return res.status(400).send("Missing parameter (:productId)");
+
+    try{
+        const product = await Product.findById(productId);
+
+        if(!product) return res.status(404).send('Product not found.');
+
+        res.status(200).json(product);
+    }catch(e){
+        next(e);
+    }
+}
+
 const Create = async(req, res, next)=>{
     const input = req.body;
 
@@ -41,5 +57,6 @@ const Create = async(req, res, next)=>{
 
 export default {
     GetList,
+    Get,
     Create,
 }

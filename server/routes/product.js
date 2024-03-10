@@ -29,6 +29,36 @@ router.get("/", product.GetList);
 
 /**
  * @openapi
+ * /product/{productId}:
+ *      get:
+ *          summary: Get a product by ID
+ *          tags:
+ *              - Product
+ *          parameters:
+ *              - name: productId
+ *                in: path
+ *                description: ID of the product to retrieve
+ *                required: true
+ *                schema:
+ *                  type: string
+ *          responses:
+ *              '200':
+ *                  description: Successful
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: '#/components/schemas/Product'
+ *              '400':
+ *                  description: Bad request. Missing parameter (productId).
+ *              '404':
+ *                  description: Product not found.
+ *              '500':
+ *                  description: Internal server error.
+ * */
+router.get('/:productId', product.Get)
+
+/**
+ * @openapi
  * /product:
  *      post:
  *          tags:

@@ -8,9 +8,10 @@
 | `/auth/refresh_token` | Refresh session            | POST    |
 | `/auth/me`            | Get current user data      | GET     |
 
-## Product Endpoint
+## Product Endpoints
 
-| Endpoint    | Description          | Methods |
-|-------------|----------------------|---------|
-| `/product`  | Retrieve products    | GET     |
-| `/product`  | Create a new product | POST    |
+| Endpoint              | Description          | Methods |
+|-----------------------|----------------------|---------|
+| `/product`            | Retrieve products    | GET     |
+| `/product/:productId` | Get a product by id  | GET     |
+| `/product`            | Create a new product | POST    |
