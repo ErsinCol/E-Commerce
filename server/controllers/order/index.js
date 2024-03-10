@@ -25,6 +25,17 @@ const Create = async (req, res, next) =>{
     }
 }
 
+const List = async (req, res, next) => {
+    try{
+        const orders = await Order.find({}).populate("user", "-password -__v").populate("items");
+
+        res.status(200).json(orders);
+    }catch(e){
+        next(e);
+    }
+}
+
 export default {
     Create,
+    List,
 }

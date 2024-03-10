@@ -21,6 +21,7 @@
 
 ## Order Endpoints
 
-| Endpoint | Description        | Methods |
-|----------|--------------------|---------|
-| `/order` | Create a new order | POST    |
+| Endpoint | Description              | Methods |
+|----------|--------------------------|---------|
+| `/order` | Create a new order       | POST    |
+| `/order` | Get a list of all orders | GET     |

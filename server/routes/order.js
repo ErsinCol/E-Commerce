@@ -29,4 +29,17 @@ const router = Router();
  * */
 router.post("/", verifyAccessToken , Order.Create);
 
+/**
+ * @openapi
+ * /order:
+ *      get:
+ *          tags:
+ *              - Order
+ *          summary: Get a list of all orders
+ *          responses:
+ *              '200':
+ *                  description: A list of all orders
+ * */
+router.get("/", Order.List);
+
 export default router;
