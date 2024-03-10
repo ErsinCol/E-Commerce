@@ -55,7 +55,7 @@ router.get("/", product.GetList);
  *              '500':
  *                  description: Internal server error.
  * */
-router.get('/:productId', product.Get)
+router.get('/:productId', product.Get);
 
 /**
  * @openapi
@@ -83,7 +83,7 @@ router.get('/:productId', product.Get)
  *                  description: Internal server error.
  *
  * */
-router.post("/", verifyAccessToken, grantAccess("createAny", "product") , product.Create)
+router.post("/", verifyAccessToken, grantAccess("createAny", "product") , product.Create);
 
 
 /**
@@ -118,5 +118,31 @@ router.post("/", verifyAccessToken, grantAccess("createAny", "product") , produc
  *              '500':
  *                  description: Internal server error.
  * */
-router.put('/:productId', product.Update)
+router.put('/:productId', product.Update);
+
+/**
+ * @openapi
+ * /product/{productId}:
+ *      delete:
+ *          tags:
+ *              - Product
+ *          summary: Delete product
+ *          parameters:
+ *              - name: productId
+ *                in: path
+ *                description: ID of the product to delete
+ *                required: true
+ *                schema:
+ *                  type: string
+ *          responses:
+ *              '200':
+ *                  description: Product successfully deleted
+ *              '400':
+ *                  description: Missing parameter (:productId)
+ *              '404':
+ *                  description: Product not found
+ *              '500':
+ *                  description: Internal server error
+ * */
+router.delete('/:productId', product.Delete);
 export default router;

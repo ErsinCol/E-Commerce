@@ -72,9 +72,26 @@ const Update = async(req, res, next)=>{
     }
 }
 
+const Delete = async(req, res, next)=>{
+    const { productId } = req.params;
+
+    if(!productId) return res.status(400).send("Missing parameter (:productId)");
+
+    try{
+        const deletedProduct = await Product.findByIdAndDelete(productId);
+
+        if(!deletedProduct) return res.status(400).send("Product not found");
+
+        res.status(200).send("Product successfully deleted");
+    }catch(e){
+        next(e);
+    }
+}
+
 export default {
     GetList,
     Get,
     Create,
     Update,
+    Delete,
 }
