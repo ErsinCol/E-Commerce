@@ -42,4 +42,21 @@ router.post("/", verifyAccessToken , Order.Create);
  * */
 router.get("/", Order.List);
 
+/**
+ * @openapi
+ * /order/my-orders:
+ *      get:
+ *          tags:
+ *              - Order
+ *          summary: Get user's orders
+ *          security:
+ *              - bearerAuth: []
+ *          responses:
+ *              '200':s
+ *                  description: Successfully retrieved user's orders
+ *              '401':
+ *                  $ref: '#/components/responses/UnauthorizedError'
+ * */
+router.get("/my-orders", verifyAccessToken, Order.GetMyOrders);
+
 export default router;

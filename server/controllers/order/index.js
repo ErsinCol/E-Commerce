@@ -35,7 +35,20 @@ const List = async (req, res, next) => {
     }
 }
 
+const GetMyOrders = async (req, res, next) => {
+    const { userId } = req.payload;
+
+    try{
+        const orders = await Order.find({user: userId}).populate("items");
+
+        res.status(200).json(orders);
+    }catch(e){
+        next(e);
+    }
+}
+
 export default {
     Create,
     List,
+    GetMyOrders,
 }
