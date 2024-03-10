@@ -1,5 +1,5 @@
 import Product from "../../models/product.js";
-import ProductSchema from "./validations.js";
+import Schemas from './validations.js';
 
 const limit = 12;
 const GetList = async (req, res, next)=>{
@@ -37,7 +37,7 @@ const Get = async(req, res, next) =>{
 const Create = async(req, res, next)=>{
     const input = req.body;
 
-    const {error} = ProductSchema.validate(input);
+    const {error} = Schemas.Create.validate(input);
 
     if(error) return res.status(400).send(error.details[0].message);
 
@@ -55,8 +55,26 @@ const Create = async(req, res, next)=>{
     }
 }
 
+const Update = async(req, res, next)=>{
+    const { productId } = req.params;
+    if(!productId) return res.status(400).send("Missing parameter (:productId)");
+
+    const input = req.body;
+    const {error} = Schemas.Update.validate(input);
+    if(error) return res.status(400).send(error.details[0].message);
+
+    try{
+        const updatedProduct = await Product.findByIdAndUpdate(productId, input, {new: true});
+
+        res.status(200).json(updatedProduct);
+    }catch(e){
+        next(e);
+    }
+}
+
 export default {
     GetList,
     Get,
     Create,
+    Update,
 }

@@ -57,7 +57,6 @@ const options = {
                             description: "Created date of product"
                         },
                     },
-                    required: ["title", "price"]
                 },
             }
         },

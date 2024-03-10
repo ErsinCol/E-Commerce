@@ -15,3 +15,4 @@
 | `/product`            | Retrieve products    | GET     |
 | `/product/:productId` | Get a product by id  | GET     |
 | `/product`            | Create a new product | POST    |
+| `/product/:productId` | Update a product     | PUT     |

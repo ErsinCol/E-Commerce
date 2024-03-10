@@ -85,4 +85,38 @@ router.get('/:productId', product.Get)
  * */
 router.post("/", verifyAccessToken, grantAccess("createAny", "product") , product.Create)
 
+
+/**
+ * @openapi
+ * /product/{productId}:
+ *      put:
+ *          tags:
+ *              - Product
+ *          summary: Update product
+ *          parameters:
+ *              - name: productId
+ *                in: path
+ *                description: ID of the product to update
+ *                required: true
+ *                schema:
+ *                  type: string
+ *          requestBody:
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#components/schemas/Product'
+ *              required: true
+ *          responses:
+ *              '200':
+ *                  description: Product updated successfully.
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: '#components/schemas/Product'
+ *              '400':
+ *                  description: Bad request.
+ *              '500':
+ *                  description: Internal server error.
+ * */
+router.put('/:productId', product.Update)
 export default router;
