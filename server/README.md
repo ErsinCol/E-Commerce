@@ -17,3 +17,10 @@
 | `/product/:productId` | Get a product by id  | GET     |
 | `/product/:productId` | Update a product     | PUT     |
 | `/product/:productId` | Delete a product     | DELETE  |
+
+
+## Order Endpoints
+
+| Endpoint | Description        | Methods |
+|----------|--------------------|---------|
+| `/order` | Create a new order | POST    |

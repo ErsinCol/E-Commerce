@@ -58,6 +58,28 @@ const options = {
                         },
                     },
                 },
+                Order: {
+                    type: Object,
+                    properties: {
+                        address: {
+                            type: String,
+                            description: "Address of the order"
+                        },
+                        items: {
+                            type: Array,
+                            description: "List of products on order",
+                            items: {
+                                type: String
+                            }
+                        }
+                    },
+                    required: ['address', 'items']
+                }
+            },
+            responses: {
+                UnauthorizedError: {
+                    description: "Access token is missing or invalid"
+                }
             }
         },
     },
