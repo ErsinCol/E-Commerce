@@ -7,7 +7,7 @@ import cors from "cors"
 import swaggerUi from "swagger-ui-express"
 import swaggerSpec from "./helpers/swaggerSpec.js"
 import routes from "./routes/index.js"
-import errMiddleware from "./middlewares/error.js"
+import ErrorHandler from "./middlewares/error.js"
 
 const app = express();
 
@@ -21,6 +21,6 @@ app.use(routes)
 
 app.use("/api-doc", swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
-app.use(errMiddleware)
+app.use(ErrorHandler);
 
 export default app;

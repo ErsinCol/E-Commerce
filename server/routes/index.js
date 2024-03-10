@@ -6,7 +6,7 @@ import auth from "./auth.js";
 import product from './product.js';
 import order from "./order.js";
 
-router.get('/', function(req, res, next) {
+router.get('/', (req, res, next)=> {
   res.send("Hello.");
 });
 
