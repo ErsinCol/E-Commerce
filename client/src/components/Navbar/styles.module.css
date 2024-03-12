@@ -1,0 +1,35 @@
+.nav {
+    padding: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e2e8f0;
+    line-height: 2px;
+}
+
+.nav .left {
+    display: flex;
+    align-items: center;
+}
+
+.nav .left .menu {
+    display: flex;
+    margin-left: 40px;
+}
+
+.nav .left .menu li a {
+    color: #4a5568;
+    text-decoration: none;
+    font-size: 1rem;
+    padding: 4px 16px;
+    display: block;
+}
+
+.nav .left .menu li a:hover {
+    color: #000;
+}
+
+.nav .right {
+    display: flex;
+    gap: 4px;
+}
