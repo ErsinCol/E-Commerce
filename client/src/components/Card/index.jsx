@@ -1,21 +1,22 @@
 import {Image, Button, Box} from "@chakra-ui/react";
 import {Link} from "react-router-dom";
+import {formatDate} from "../../utils/formatDate.js";
 
-export default function BaseCard(){
+export default function Card({product}){
     return (
         <Box borderWidth="1px" borderRadius="lg" borderColor="#e2e8f0" borderStyle="solid" overflow="hidden" p="4">
             <Link to="/">
-                <Image src="https://picsum.photos/id/0/5000/3333" alt="product"/>
+                <Image src={product.photos[0]} alt="product" fallbackSrc='https://via.placeholder.com/150'/>
                 <Box p="4">
                     <Box display="flex" alignItems="baseline">
-                        12/12/2023
+                        {formatDate(product.createdAt)}
                     </Box>
 
                     <Box mt="1" fontWeight="semibold" as="h4">
-                        Macbook air
+                        {product.title}
                     </Box>
 
-                    <Box>27500 TL</Box>
+                    <Box>{product.price} TL</Box>
                 </Box>
             </Link>
             <Button colorScheme="pink">Add to basket</Button>

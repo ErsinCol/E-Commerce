@@ -52,7 +52,7 @@ router.get("/", Order.List);
  *          security:
  *              - bearerAuth: []
  *          responses:
- *              '200':s
+ *              '200':
  *                  description: Successfully retrieved user's orders
  *              '401':
  *                  $ref: '#/components/responses/UnauthorizedError'
