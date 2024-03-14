@@ -1,6 +1,7 @@
 import {Image, Button, Box} from "@chakra-ui/react";
 import {Link} from "react-router-dom";
 import {formatDate} from "../../utils/formatDate.js";
+import PropTypes from "prop-types";
 
 export default function Card({product}){
     return (
@@ -23,3 +24,15 @@ export default function Card({product}){
         </Box>
     )
 }
+
+Card.propTypes = {
+    product: PropTypes.exact({
+        _id: PropTypes.string.isRequired,
+        title: PropTypes.string.isRequired,
+        price: PropTypes.number.isRequired,
+        createdAt: PropTypes.string.isRequired,
+        description: PropTypes.string,
+        photos: PropTypes.arrayOf(PropTypes.string),
+    }).isRequired
+}
+
