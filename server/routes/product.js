@@ -13,6 +13,11 @@ const router = Router();
  *              - Product
  *          summary: Retrieve a list of products
  *          description: Returns a list of products
+ *          parameters:
+ *              - in: query
+ *                name: page
+ *                schema:
+ *                  type: integer
  *          responses:
  *              '200':
  *                  description: Product list
