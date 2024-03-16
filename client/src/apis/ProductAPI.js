@@ -1,11 +1,11 @@
 import {api} from "./configs/axiosConfig.js";
 
 export const fetchProductList = async () => {
-    try{
-        const response = await api.get("/product");
+    const response = await api.get("/product");
+    return response.data;
+}
 
-        return response.data;
-    }catch (error){
-        throw error;
-    }
+export const fetchProductDetail = async(id) => {
+    const response = await api.get(`/product/${id}`);
+    return response.data;
 }
