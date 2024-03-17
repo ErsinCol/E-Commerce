@@ -2,7 +2,6 @@ import {Router} from "express";
 import product from "../controllers/product/index.js";
 import {verifyAccessToken} from "../helpers/jwt.js";
 import grantAccess from "../middlewares/grantAccess.js";
-
 const router = Router();
 
 /**
@@ -73,10 +72,28 @@ router.get('/:productId', product.Get);
  *          summary: Create a new product
  *          description: Create a new product
  *          requestBody:
+ *              required: true
  *              content:
- *                  application/json:
+ *                  multipart/form-data:
  *                      schema:
- *                          $ref: '#components/schemas/Product'
+ *                          type: object
+ *                          required:
+ *                              - title
+ *                              - price
+ *                          properties:
+ *                              title:
+ *                                  type: string
+ *                              description:
+ *                                  type: string
+ *                              price:
+ *                                  type: number
+ *                              photos:
+ *                                  type: array
+ *                                  items:
+ *                                      type: string
+ *                                      format: binary
+ *
+ *
  *          responses:
  *              '201':
  *                  description: Product created successfully.

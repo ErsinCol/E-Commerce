@@ -23,7 +23,7 @@ export default function ProductDetail(){
 
     let images;
     if(data.photos.length > 0){
-        images = data.photos.map((url) => ({original: url}))
+        images = data.photos.map((url) => ({original: `http://localhost:3000${url}`}))
     }
 
     return (

@@ -7,7 +7,7 @@ export default function Card({product}){
     return (
         <Box borderWidth="1px" borderRadius="lg" borderColor="#e2e8f0" borderStyle="solid" overflow="hidden" p="4">
             <Link to={`/product/${product._id}`}>
-                <Image src={product.photos[0]} alt="product" fallbackSrc='https://via.placeholder.com/150'/>
+                <Image src={`http://localhost:3000${product.photos[0]}`} alt="product" width="150px" fallbackSrc='https://via.placeholder.com/150'/>
                 <Box p="4">
                     <Box display="flex" alignItems="baseline">
                         {formatDate(product.createdAt)}

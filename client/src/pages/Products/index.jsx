@@ -57,8 +57,8 @@ export default function Products() {
                     { isFetchingNextPage
                         ? "Loading more..."
                         : hasNextPage
-                        ? "Load more"
-                        : "Nothing more to load"
+                            ? "Load more"
+                            : "Nothing more to load"
                     }
                 </Button>
             </Flex>
