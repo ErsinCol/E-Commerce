@@ -1,6 +1,6 @@
 import {api} from "./configs/axiosConfig.js";
 
-export const fetchProductList = async (pageParam) => {
+export const fetchProductList = async (pageParam= 1) => {
     const response = await api.get(`/product?page=${pageParam}`);
     return response.data;
 }

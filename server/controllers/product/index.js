@@ -37,7 +37,7 @@ const Get = async(req, res, next) =>{
 const Create = async(req, res, next)=>{
     try{
         const input = req.body;
-        const photos = req.files?.photos;
+        const photos = (typeof req.files?.photos === "object") ? [req.files.photos] : req.files?.photos;
 
         const photoUrls = photos?.map(photo => `/product/photos/${photo.name}`)
         const payload = {
