@@ -13,7 +13,7 @@ export default function Products(){
     const {products} = useLoaderData();
 
     return (
-        <>
+        <div style={{padding: "1rem"}}>
             {
                 products.length ? (
                     <Grid templateColumns="repeat(3, 1fr)" gap="4">
@@ -29,6 +29,6 @@ export default function Products(){
                     </p>
                 )
             }
-        </>
+        </div>
     );
 }

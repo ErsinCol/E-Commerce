@@ -1,8 +1,20 @@
 import {useFormik} from "formik";
 import {useNavigate} from "react-router-dom";
-import {Input, Button, Flex, Box, FormControl, FormLabel, VStack} from "@chakra-ui/react";
+import {
+    Input,
+    Button,
+    Flex,
+    Box,
+    FormControl,
+    FormLabel,
+    VStack,
+    Heading,
+    Alert,
+    AlertIcon,
+    AlertTitle,
+    FormErrorMessage
+} from "@chakra-ui/react";
 import RegisterSchema from "./validation.js";
-import ErrorMessage from "../../../components/ErrorMessage/index.jsx";
 import AuthAPI from "../../../apis/AuthAPI.js";
 
 export default function Register(){
@@ -15,29 +27,39 @@ export default function Register(){
             passwordConfirm: ""
         },
         validationSchema: RegisterSchema,
-        onSubmit: async (values) => {
+        onSubmit: async (values, {setErrors}) => {
             try{
                 const response = await AuthAPI.Register({
                     email: values.email,
                     password: values.password,
                 });
 
-                if(response.status === 201){
-                    console.log(response.data)
-                    navigate("/signin");
-                }
+                console.log(response);
+                navigate("/signin");
             }catch(error){
                 console.error(error);
+                setErrors({
+                    general: error.response.data,
+                })
             }
         }
     })
 
     return (
-        <Flex bg="gray.100" h="100vh" align="center" justify="center">
+        <Flex bg="gray.100" h="100vh" align="center" justify="center" flexDir="column">
+            <Heading mb="4">Register</Heading>
+            { formik.errors.general && (
+                <Box my="4">
+                    <Alert status='error'>
+                        <AlertIcon />
+                        <AlertTitle>{formik.errors.general}</AlertTitle>
+                    </Alert>
+                </Box>
+            )}
             <Box bg="white" p="6" rounded="md" width="30rem">
                 <form method="post" onSubmit={formik.handleSubmit}>
                     <VStack spacing={4} align="flex-start">
-                        <FormControl>
+                        <FormControl isRequired>
                             <FormLabel htmlFor="email">Email</FormLabel>
                             <Input
                                 id="email"
@@ -48,11 +70,14 @@ export default function Register(){
                                 value={formik.values.email}
                                 variant="filled"
                                 autoComplete="off"
+                                isInvalid={formik.errors.email && formik.touched.email}
+                                errorBorderColor="red.300"
+                                focusBorderColor="pink.400"
                             />
-                            { (formik.errors.email && formik.touched.email) && <ErrorMessage message={formik.errors.email} /> }
+                            {(formik.errors.email && formik.touched.email) && <FormErrorMessage>{formik.errors.email}</FormErrorMessage> }
                         </FormControl>
 
-                        <FormControl>
+                        <FormControl isRequired>
                             <FormLabel htmlFor="password">Password</FormLabel>
                             <Input
                                 id="password"
@@ -62,11 +87,14 @@ export default function Register(){
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
                                 value={formik.values.password}
+                                isInvalid={formik.errors.password && formik.touched.password}
+                                errorBorderColor="red.300"
+                                focusBorderColor="pink.400"
                             />
-                            { (formik.errors.password && formik.touched.password) && <ErrorMessage message={formik.errors.password} /> }
+                            {(formik.errors.password && formik.touched.password) && <FormErrorMessage>{formik.errors.password}</FormErrorMessage> }
                         </FormControl>
 
-                        <FormControl>
+                        <FormControl isRequired>
                             <FormLabel htmlFor="passwordConfirm">Password confirm</FormLabel>
                             <Input
                                 id="passwordConfirm"
@@ -76,8 +104,11 @@ export default function Register(){
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
                                 value={formik.values.passwordConfirm}
+                                isInvalid={formik.errors.passwordConfirm && formik.touched.passwordConfirm}
+                                errorBorderColor="red.300"
+                                focusBorderColor="pink.400"
                             />
-                            { (formik.errors.passwordConfirm && formik.touched.passwordConfirm) && <ErrorMessage message={formik.errors.passwordConfirm} /> }
+                            {(formik.errors.passwordConfirm && formik.touched.passwordConfirm) &&  <FormErrorMessage>{formik.errors.passwordConfirm}</FormErrorMessage> }
                         </FormControl>
 
                         <Button type="submit" colorScheme="pink" width="full">Submit</Button>
