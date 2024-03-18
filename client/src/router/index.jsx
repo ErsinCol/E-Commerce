@@ -6,6 +6,7 @@ import Products, {loader as productListLoader} from "../pages/Products/index.jsx
 import Signin from "../pages/Auth/Signin/index.jsx";
 import Register from "../pages/Auth/Register/index.jsx";
 import ProductDetail, {loader as productDetailLoader} from "../pages/ProductDetail/index.jsx";
+import Profile from "../pages/Profile/index.jsx";
 
 const router = createBrowserRouter([
     {
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
             {
                 path: "register",
                 element: <Register />,
+            },
+            {
+                path: "profile",
+                element: <Profile />
             }
         ]
     }

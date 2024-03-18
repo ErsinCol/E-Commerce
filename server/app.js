@@ -20,8 +20,7 @@ const app = express();
 
 app.use(cors());
 app.use(fileUpload({
-    limits: { fileSize: 50 * 1024 * 1024 },
-    debug: true
+    limits: { fileSize: 50 * 1024 * 1024 }
 }))
 app.use("/product/photos", express.static(path.join(__dirname, "public/images/product")));
 app.use(logger('dev'));

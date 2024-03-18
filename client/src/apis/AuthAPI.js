@@ -6,6 +6,13 @@ const Register = async(user) => {
     return response.data;
 }
 
+const Me = async()=>{
+    const response = await api.get("/auth/me");
+
+    return response.data;
+}
+
 export default {
     Register,
+    Me,
 }
