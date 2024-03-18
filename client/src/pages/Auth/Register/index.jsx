@@ -16,8 +16,10 @@ import {
 } from "@chakra-ui/react";
 import RegisterSchema from "./validation.js";
 import AuthAPI from "../../../apis/AuthAPI.js";
+import {useAuth} from "../../../contexts/AuthContext.jsx";
 
 export default function Register(){
+    const {login} = useAuth();
     const navigate = useNavigate();
 
     const formik = useFormik({
@@ -34,8 +36,8 @@ export default function Register(){
                     password: values.password,
                 });
 
-                console.log(response);
-                navigate("/signin");
+                login(response);
+                navigate("/");
             }catch(error){
                 console.error(error);
                 setErrors({
