@@ -3,6 +3,7 @@ import {fetchProductDetail} from "../../apis/ProductAPI.js";
 import { Box, Text, Button } from "@chakra-ui/react";
 import {formatDate} from "../../utils/formatDate.js";
 import ImageGallery from "react-image-gallery";
+import {useBasket} from "../../contexts/BasketContext.jsx";
 
 export async function loader({params}){
     const product = await fetchProductDetail(params.productId);
@@ -19,6 +20,7 @@ export async function loader({params}){
 
 export default function ProductDetail(){
     const {product} = useLoaderData();
+    const {addItem, removeItem, isInBasket} = useBasket();
 
     let images;
     if(product.photos.length > 0){
@@ -27,7 +29,9 @@ export default function ProductDetail(){
 
     return (
         <div>
-            <Button colorScheme="pink">Add to basket</Button>
+            <Button colorScheme={isInBasket(product) ? "pink" : "green"} onClick={() => isInBasket(product) ? removeItem(product) : addItem(product)}>
+                {isInBasket(product) ? "Remove from basket" : "Add to basket"}
+            </Button>
 
             <Text as="h2" fontSize="2xl">{product.title}</Text>
 

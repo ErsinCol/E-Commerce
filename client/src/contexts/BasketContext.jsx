@@ -5,9 +5,22 @@ const BasketContext = createContext();
 export const BasketProvider = ({children}) => {
     const [items, setItems] = useState([]);
 
+    const addItem = (item) => {
+        setItems((prevState)=> [...prevState, item]);
+    }
+
+    const removeItem = (item) => {
+        setItems((prevState)=> prevState.filter((prevItem)=> prevItem !== item));
+    }
+
+    const isInBasket = (item) => items.includes(item);
+
     const providedValues = {
         items,
         setItems,
+        addItem,
+        removeItem,
+        isInBasket,
     }
 
     return (
