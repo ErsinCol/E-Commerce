@@ -37,7 +37,7 @@ export default function Register(){
                 });
 
                 login(response);
-                navigate("/");
+                navigate("/profile");
             }catch(error){
                 console.error(error);
                 setErrors({

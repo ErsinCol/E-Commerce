@@ -12,7 +12,18 @@ const Me = async()=>{
     return response.data;
 }
 
+const Logout = async () => {
+    const refreshToken = localStorage.getItem("refresh-token");
+
+    const response = await api.post("/auth/logout", {
+        refresh_token: refreshToken,
+    })
+
+    return response.data;
+}
+
 export default {
     Register,
     Me,
+    Logout,
 }

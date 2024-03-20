@@ -1,13 +1,27 @@
 import { useAuth } from "../../contexts/AuthContext.jsx";
-import {Heading} from "@chakra-ui/react";
+import {Button, Flex, Heading} from "@chakra-ui/react";
+import {useNavigate} from "react-router-dom";
 
 export default function Profile(){
-    const { user } = useAuth();
+    const { user, logout } = useAuth();
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        logout(()=>{
+            navigate("/");
+        });
+    }
 
     return (
-        <div>
+        <Flex flexDir="column" alignItems="start" gap="4">
             <Heading>Profile</Heading>
             <pre>{JSON.stringify(user, null, 2)}</pre>
-        </div>
+            <Button
+                onClick={handleLogout}
+                colorScheme="pink"
+            >
+                Logout
+            </Button>
+        </Flex>
     )
 }

@@ -6,7 +6,7 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({children}) => {
     const [user, setUser] = useState(null);
-    const [loggedIn, setLoggedIn] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(()=>{
@@ -14,7 +14,7 @@ export const AuthProvider = ({children}) => {
             try{
                 const response = await AuthAPI.Me();
                 setUser(response);
-                setLoggedIn(true);
+                setIsLoggedIn(true);
                 setIsLoading(false);
             }catch(e){
                 console.error((e));
@@ -26,16 +26,33 @@ export const AuthProvider = ({children}) => {
     }, [])
 
     const login = (userData) => {
+        setIsLoggedIn(true);
         setUser(userData.user);
-        setLoggedIn(true);
         localStorage.setItem("access-token", userData.accessToken);
         localStorage.setItem("refresh-token", userData.refreshToken);
     }
 
+    const logout = async (cb) => {
+        try{
+            setIsLoggedIn(false);
+            setUser(null);
+
+            await AuthAPI.Logout();
+
+            localStorage.removeItem("access-token");
+            localStorage.removeItem("refresh-token");
+
+            cb();
+        }catch(e){
+            console.error(e);
+        }
+    }
+
     const providedValues = {
         user,
-        loggedIn,
+        isLoggedIn,
         login,
+        logout,
     }
 
     if(isLoading){

@@ -4,7 +4,7 @@ import {Button} from "@chakra-ui/react";
 import {useAuth} from "../../contexts/AuthContext.jsx";
 
 export default function Navbar() {
-    const {loggedIn} = useAuth();
+    const {isLoggedIn} = useAuth();
 
     return (
         <nav className={styles.nav}>
@@ -19,7 +19,7 @@ export default function Navbar() {
                 </ul>
             </div>
             <div className={styles.right}>
-                {!loggedIn ? (
+                {!isLoggedIn ? (
                     <>
                         <Link to="/signin">
                             <Button colorScheme="pink">Login</Button>
