@@ -1,24 +1,22 @@
-import {useFormik} from "formik";
+import {useAuth} from "../../../contexts/AuthContext.jsx";
 import {useNavigate} from "react-router-dom";
+import {useFormik} from "formik";
+import LoginSchema from "./validation.js";
+import AuthAPI from "../../../apis/AuthAPI.js";
 import {
-    Input,
-    Button,
-    Flex,
-    Box,
-    FormControl,
-    FormLabel,
-    VStack,
-    Heading,
     Alert,
     AlertIcon,
     AlertTitle,
-    FormErrorMessage
+    Box, Button,
+    Flex,
+    FormControl, FormErrorMessage,
+    FormLabel,
+    Heading,
+    Input,
+    VStack
 } from "@chakra-ui/react";
-import RegisterSchema from "./validation.js";
-import AuthAPI from "../../../apis/AuthAPI.js";
-import {useAuth} from "../../../contexts/AuthContext.jsx";
 
-export default function Register(){
+export default function Login(){
     const {login} = useAuth();
     const navigate = useNavigate();
 
@@ -26,12 +24,11 @@ export default function Register(){
         initialValues: {
             email: "",
             password: "",
-            passwordConfirm: ""
         },
-        validationSchema: RegisterSchema,
+        validationSchema: LoginSchema,
         onSubmit: async (values, {setErrors}) => {
             try{
-                const response = await AuthAPI.Register({
+                const response = await AuthAPI.Login({
                     email: values.email,
                     password: values.password,
                 });
@@ -49,7 +46,7 @@ export default function Register(){
 
     return (
         <Flex bg="gray.100" h="100vh" align="center" justify="center" flexDir="column">
-            <Heading mb="4">Sign Up</Heading>
+            <Heading mb="4">Sign In</Heading>
             { formik.errors.general && (
                 <Box my="4">
                     <Alert status='error'>
@@ -96,24 +93,7 @@ export default function Register(){
                             {(formik.errors.password && formik.touched.password) && <FormErrorMessage>{formik.errors.password}</FormErrorMessage> }
                         </FormControl>
 
-                        <FormControl isRequired>
-                            <FormLabel htmlFor="passwordConfirm">Password confirm</FormLabel>
-                            <Input
-                                id="passwordConfirm"
-                                name="passwordConfirm"
-                                type="password"
-                                variant="filled"
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                value={formik.values.passwordConfirm}
-                                isInvalid={formik.errors.passwordConfirm && formik.touched.passwordConfirm}
-                                errorBorderColor="red.300"
-                                focusBorderColor="pink.400"
-                            />
-                            {(formik.errors.passwordConfirm && formik.touched.passwordConfirm) &&  <FormErrorMessage>{formik.errors.passwordConfirm}</FormErrorMessage> }
-                        </FormControl>
-
-                        <Button type="submit" colorScheme="pink" width="full">Sign Up</Button>
+                        <Button type="submit" colorScheme="pink" width="full">Sign In</Button>
                     </VStack>
                 </form>
             </Box>
