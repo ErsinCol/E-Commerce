@@ -1,9 +1,14 @@
+import PropTypes from "prop-types";
 import {Image, Button, Box} from "@chakra-ui/react";
 import {Link} from "react-router-dom";
 import {formatDate} from "../../utils/formatDate.js";
-import PropTypes from "prop-types";
+import {useBasket} from "../../contexts/BasketContext.jsx";
 
 export default function Card({product}){
+    const {addItem, removeItem, items} = useBasket();
+
+    const isInBasket = items.find(item => item._id === product._id);
+
     return (
         <Box borderWidth="1px" borderRadius="lg" borderColor="#e2e8f0" borderStyle="solid" overflow="hidden" p="4">
             <Link to={`/product/${product._id}`}>
@@ -20,7 +25,7 @@ export default function Card({product}){
                     <Box>{product.price} TL</Box>
                 </Box>
             </Link>
-            <Button colorScheme="pink">Add to basket</Button>
+            <Button onClick={()=> isInBasket ? removeItem(product) : addItem(product)} colorScheme={isInBasket ? "pink" : "green"}>{isInBasket ? "Remove from basket" : "Add to basket"}</Button>
         </Box>
     )
 }
