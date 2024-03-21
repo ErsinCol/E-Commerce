@@ -19,11 +19,17 @@ export const BasketProvider = ({children}) => {
         setItems((prevState)=> prevState.filter((prevItem)=> prevItem._id !== item._id));
     }
 
+    const clearBasket = () => {
+        localStorage.removeItem("basket");
+        setItems([]);
+    }
+
     const providedValues = {
         items,
         setItems,
         addItem,
-        removeItem
+        removeItem,
+        clearBasket,
     }
 
     return (

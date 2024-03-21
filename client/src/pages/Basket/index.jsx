@@ -7,13 +7,33 @@ import {
     Text,
     Flex,
     Box,
-    Button, IconButton
+    Button,
+    IconButton,
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalFooter,
+    ModalBody,
+    ModalCloseButton,
+    FormControl,
+    FormLabel,
+    FormErrorMessage,
+    useDisclosure, Input, Textarea, useToast,
 } from "@chakra-ui/react";
 import {Link} from "react-router-dom";
-import {DeleteIcon, AddIcon} from "@chakra-ui/icons";
+import {DeleteIcon} from "@chakra-ui/icons";
+import OrderAPI from "../../apis/OrderAPI.js";
+import React, {useState} from "react";
 
 export default function Basket(){
-    const {items, removeItem} = useBasket();
+    const {items, removeItem, clearBasket} = useBasket();
+
+    const {isOpen, onOpen, onClose} = useDisclosure();
+    const toast = useToast();
+    const initialRef = React.useRef(null);
+
+    const [address, setAddress] = useState("");
 
     const isEmptyBasket = items.length === 0;
 
@@ -24,6 +44,32 @@ export default function Basket(){
 
         removeItem(item);
     }
+
+    const handleSubmit = async () => {
+        try{
+            const itemsId = items.map(item => item._id);
+
+            const data = {
+                address: address,
+                items: itemsId,
+            }
+
+            await OrderAPI.Create(data);
+
+            clearBasket();
+
+            onClose();
+
+            toast({
+                title: "Order created successfully",
+                status: "success"
+            })
+
+        }catch(e){
+            console.error(e);
+        }
+    }
+
     return (
         <Box p="4">
             {isEmptyBasket ? (
@@ -64,6 +110,41 @@ export default function Basket(){
                             Total: {total} TL
                         </Text>
                     </Box>
+
+                    <Button mt={2} size="sm" colorScheme="green" onClick={onOpen}>Order</Button>
+
+                    <Modal
+                        initialFocusRef={initialRef}
+                        isOpen={isOpen}
+                        onClose={onClose}
+                    >
+                        <ModalOverlay />
+                        <ModalContent>
+                            <ModalHeader>Order</ModalHeader>
+                            <ModalCloseButton />
+                            <ModalBody>
+                                <FormControl isRequired>
+                                    <FormLabel>Address</FormLabel>
+                                    <Textarea
+                                        size="sm"
+                                        value={address}
+                                        onChange={(e) => setAddress(e.target.value)}
+                                        ref={initialRef}
+                                    />
+                                </FormControl>
+                            </ModalBody>
+                            <ModalFooter>
+                                <Button
+                                    colorScheme="blue"
+                                    isDisabled={address === ""}
+                                    onClick={handleSubmit}
+                                >
+                                    Save
+                                </Button>
+                                <Button onClick={onClose}>Cancel</Button>
+                            </ModalFooter>
+                        </ModalContent>
+                    </Modal>
                 </>
 
             )}
