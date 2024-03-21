@@ -39,6 +39,9 @@ export default function Navbar() {
                                 </Button>
                             </Link>
                         )}
+                        <Link to="/my-orders">
+                            <Button colorScheme="pink">My Orders</Button>
+                        </Link>
                         <Link to="/profile">
                             <Button colorScheme="pink">Profile</Button>
                         </Link>

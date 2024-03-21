@@ -6,6 +6,13 @@ const Create = async (data) => {
     return response.data;
 }
 
+const MyOrders = async () => {
+    const response = await api.get("/order/my-orders");
+
+    return response.data;
+}
+
 export default {
     Create,
+    MyOrders,
 }

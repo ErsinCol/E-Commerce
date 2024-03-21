@@ -8,6 +8,6 @@ export default function Protected({children}){
         case true:
             return children;
         case false:
-            return <Navigate to="/" />
+            return <Navigate to="/signin" />
     }
 }

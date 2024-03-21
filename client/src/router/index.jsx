@@ -9,6 +9,7 @@ import ProductDetail, {loader as productDetailLoader} from "../pages/ProductDeta
 import Profile from "../pages/Profile/index.jsx";
 import Protected from "../pages/Protected.jsx";
 import Basket from "../pages/Basket/index.jsx";
+import MyOrders, {loader as myOrdersLoader} from "../pages/MyOrders/index.jsx";
 
 const router = createBrowserRouter([
     {
@@ -38,6 +39,11 @@ const router = createBrowserRouter([
             {
                 path: "profile",
                 element: <Protected><Profile/></Protected>
+            },
+            {
+                path: "my-orders",
+                element: <Protected><MyOrders /></Protected>,
+                loader: myOrdersLoader,
             },
             {
                 path: "basket",
