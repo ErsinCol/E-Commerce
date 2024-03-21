@@ -1,9 +1,15 @@
-import {createContext, useContext, useState} from "react";
+import {createContext, useContext, useEffect, useState} from "react";
 
 const BasketContext = createContext();
 
+const initialBasket = JSON.parse(localStorage.getItem("basket")) || [];
+
 export const BasketProvider = ({children}) => {
-    const [items, setItems] = useState([]);
+    const [items, setItems] = useState(initialBasket);
+
+    useEffect(()=> {
+        localStorage.setItem("basket", JSON.stringify(items));
+    }, [items])
 
     const addItem = (item) => {
         setItems((prevState)=> [...prevState, item]);
