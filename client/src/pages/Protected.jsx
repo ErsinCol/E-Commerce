@@ -1,8 +1,12 @@
 import {Navigate} from "react-router-dom";
 import {useAuth} from "../contexts/AuthContext.jsx";
 
-export default function Protected({children}){
-    const {isLoggedIn} = useAuth();
+export default function Protected({children, isAdmin}){
+    const {isLoggedIn, user} = useAuth();
+
+    if(isAdmin && user.role !== "admin"){
+        return <Navigate to="/" />
+    }
 
     switch (isLoggedIn){
         case true:
@@ -11,3 +15,4 @@ export default function Protected({children}){
             return <Navigate to="/signin" />
     }
 }
+

@@ -1,0 +1,8 @@
+.admin-menu {
+    display: flex;
+    gap: 1rem;
+}
+
+.admin-menu > li {
+    padding: 1rem 0;
+}
