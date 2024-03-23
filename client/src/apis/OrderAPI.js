@@ -6,6 +6,12 @@ const Create = async (data) => {
     return response.data;
 }
 
+const List = async () => {
+    const response = await api.get("/order");
+
+    return response.data;
+}
+
 const MyOrders = async () => {
     const response = await api.get("/order/my-orders");
 
@@ -14,5 +20,6 @@ const MyOrders = async () => {
 
 export default {
     Create,
+    List,
     MyOrders,
 }

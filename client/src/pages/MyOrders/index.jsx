@@ -15,15 +15,19 @@ export default function MyOrders(){
     return (
         <div>
             <Heading mb="4" size="xl">My Orders</Heading>
-            <List>
-                {orders.map((order, index) => (
-                    <ListItem key={index} border="1px solid #e2e8e0" padding="4" mb="4" borderRadius="md">
-                        <Text>Order number: {order._id}</Text>
-                        <Text>{formatDate(order.createdAt)}</Text>
-                        <Text color="green.500">{order.items.reduce((acc, item)=> acc + item.price, 0)} TL</Text>
-                    </ListItem>
-                ))}
-            </List>
+            {orders.length > 0 ? (
+                <List>
+                    {orders.map((order, index) => (
+                        <ListItem key={index} border="1px solid #e2e8e0" padding="4" mb="4" borderRadius="md">
+                            <Text>Order number: {order._id}</Text>
+                            <Text>{formatDate(order.createdAt)}</Text>
+                            <Text color="green.500">{order.items.reduce((acc, item)=> acc + item.price, 0)} TL</Text>
+                        </ListItem>
+                    ))}
+                </List>
+            ) : (
+                <Text>No orders found.</Text>
+            )}
         </div>
     );
 }
