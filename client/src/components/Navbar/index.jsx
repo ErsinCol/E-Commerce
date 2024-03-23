@@ -32,13 +32,6 @@ export default function Navbar() {
                     </>
                 ) : (
                     <>
-                        {  items.length > 0 && (
-                            <Link to="/basket">
-                                <Button colorScheme="pink" variant="outline">
-                                    Basket ({items.length})
-                                </Button>
-                            </Link>
-                        )}
                         <Link to="/my-orders">
                             <Button colorScheme="pink">My Orders</Button>
                         </Link>
@@ -48,6 +41,13 @@ export default function Navbar() {
                     </>
                 )
                 }
+                { items.length > 0 && (
+                    <Link to="/basket">
+                        <Button colorScheme="pink" variant="outline">
+                            Basket ({items.length})
+                        </Button>
+                    </Link>
+                )}
             </div>
         </nav>
     );

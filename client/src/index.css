@@ -20,6 +20,10 @@ body {
   height: 100vh;
 }
 
+#content {
+  padding: 1rem;
+}
+
 #error-page {
   display: flex;
   flex-direction: column;

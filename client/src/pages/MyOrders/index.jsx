@@ -1,6 +1,6 @@
 import OrderAPI from "../../apis/OrderAPI.js";
 import {useLoaderData} from "react-router-dom";
-import {Box, Heading, List, ListItem, Text} from "@chakra-ui/react";
+import { Heading, List, ListItem, Text} from "@chakra-ui/react";
 import {formatDate} from "../../utils/formatDate.js";
 
 export async function loader(){
@@ -13,7 +13,7 @@ export default function MyOrders(){
     const {orders} = useLoaderData();
 
     return (
-        <Box p="4">
+        <div>
             <Heading mb="4" size="xl">My Orders</Heading>
             <List>
                 {orders.map((order, index) => (
@@ -24,6 +24,6 @@ export default function MyOrders(){
                     </ListItem>
                 ))}
             </List>
-        </Box>
+        </div>
     );
 }

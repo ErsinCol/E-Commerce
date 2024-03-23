@@ -1,4 +1,5 @@
 import {useBasket} from "../../contexts/BasketContext.jsx";
+import {useAuth} from "../../contexts/AuthContext.jsx";
 import {
     Alert,
     List,
@@ -18,16 +19,17 @@ import {
     ModalCloseButton,
     FormControl,
     FormLabel,
-    FormErrorMessage,
     useDisclosure, Input, Textarea, useToast,
 } from "@chakra-ui/react";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {DeleteIcon} from "@chakra-ui/icons";
 import OrderAPI from "../../apis/OrderAPI.js";
 import React, {useState} from "react";
 
 export default function Basket(){
     const {items, removeItem, clearBasket} = useBasket();
+    const {isLoggedIn} = useAuth();
+    const navigate = useNavigate();
 
     const {isOpen, onOpen, onClose} = useDisclosure();
     const toast = useToast();
@@ -43,6 +45,14 @@ export default function Basket(){
         event.preventDefault();
 
         removeItem(item);
+    }
+
+    const handleOrder = () => {
+        if(isLoggedIn){
+            onOpen();
+        }else{
+            navigate("/signin");
+        }
     }
 
     const handleSubmit = async () => {
@@ -111,7 +121,7 @@ export default function Basket(){
                         </Text>
                     </Box>
 
-                    <Button mt={2} size="sm" colorScheme="green" onClick={onOpen}>Order</Button>
+                    <Button mt={2} size="sm" colorScheme="green" onClick={handleOrder}>Order</Button>
 
                     <Modal
                         initialFocusRef={initialRef}

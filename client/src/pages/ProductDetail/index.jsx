@@ -1,10 +1,8 @@
 import {useLoaderData} from "react-router-dom";
 import {fetchProductDetail} from "../../apis/ProductAPI.js";
-import { Box, Text, Button } from "@chakra-ui/react";
-import {formatDate} from "../../utils/formatDate.js";
+import {Box, Text, Button, Flex, Grid, Heading, VStack} from "@chakra-ui/react";
 import ImageGallery from "react-image-gallery";
 import {useBasket} from "../../contexts/BasketContext.jsx";
-import {useEffect} from "react";
 
 export async function loader({params}){
     const product = await fetchProductDetail(params.productId);
@@ -31,23 +29,25 @@ export default function ProductDetail(){
     const isInBasket = items.find(item => item._id === product._id);
 
     return (
-        <div>
-            <Button colorScheme={isInBasket ? "pink" : "green"} onClick={() => isInBasket ? removeItem(product) : addItem(product)}>
-                {isInBasket ? "Remove from basket" : "Add to basket"}
-            </Button>
+        <Grid templateColumns="repeat(2, 1fr)" border="1px" borderColor="gray.300" borderRadius="lg">
+            <Box borderTopLeftRadius="lg" borderBottomLeftRadius="lg">
+                {
+                    images && (
+                        <ImageGallery items={images} />
+                    )
+                }
+            </Box>
+            <VStack align="start" spacing="16px" p="4" backgroundColor="gray.100" borderBottomRightRadius="lg" borderTopRightRadius="lg">
+                <Heading as="h4" size="md">{product.title}</Heading>
 
-            <Text as="h2" fontSize="2xl">{product.title}</Text>
+                <Text fontSize="xl" fontWeight="bold">{product.price} TL</Text>
 
-            <Text>{formatDate(product.createdAt)}</Text>
+                <Text>{product.description}</Text>
 
-            <p>{product.description}</p>
-
-            {images &&
-                <Box margin="10px">
-                    <ImageGallery items={images} />
-                </Box>
-            }
-
-        </div>
-    )
+                <Button colorScheme={isInBasket ? "pink" : "green"} onClick={() => isInBasket ? removeItem(product) : addItem(product)}>
+                    {isInBasket ? "Remove from basket" : "Add to basket"}
+                </Button>
+            </VStack>
+        </Grid>
+    );
 }

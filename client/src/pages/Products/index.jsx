@@ -13,10 +13,10 @@ export default function Products(){
     const {products} = useLoaderData();
 
     return (
-        <div style={{padding: "1rem"}}>
+        <div id="products-page">
             {
                 products.length ? (
-                    <Grid templateColumns="repeat(3, 1fr)" gap="4">
+                    <Grid templateColumns="repeat(5, 1fr)" gap="4">
                         {
                             products.map((product, index)=>(
                                 <Card product={product} key={index} />
