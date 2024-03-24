@@ -12,8 +12,8 @@ import Basket from "../pages/Basket/index.jsx";
 import MyOrders, {loader as myOrdersLoader} from "../pages/MyOrders/index.jsx";
 import Admin from "../pages/Admin/index.jsx";
 import AdminHome from "../pages/Admin/Home/index.jsx";
-import AdminOrders, {loader as  adminOrdersLoaders} from "../pages/Admin/Orders/index.jsx";
-import AdminProducts from "../pages/Admin/Products/index.jsx";
+import AdminOrders, {loader as  adminOrdersLoader} from "../pages/Admin/Orders/index.jsx";
+import AdminProducts, {loader as adminProductsLoader} from "../pages/Admin/Products/index.jsx";
 
 const router = createBrowserRouter([
     {
@@ -60,11 +60,12 @@ const router = createBrowserRouter([
                     {
                         path: "orders",
                         element: <AdminOrders />,
-                        loader: adminOrdersLoaders,
+                        loader: adminOrdersLoader,
                     },
                     {
                         path: "products",
                         element: <AdminProducts />,
+                        loader: adminProductsLoader,
                     }
                 ]
             },

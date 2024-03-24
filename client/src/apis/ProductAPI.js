@@ -9,3 +9,8 @@ export const fetchProductDetail = async(id) => {
     const response = await api.get(`/product/${id}`);
     return response.data;
 }
+
+export const deleteProduct = async(id) => {
+    const response = await api.delete(`/product/${id}`);
+    return response.data;
+}
