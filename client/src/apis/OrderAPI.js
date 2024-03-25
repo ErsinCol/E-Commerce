@@ -1,25 +1,22 @@
 import {api} from "./configs/axiosConfig.js";
 
-const Create = async (data) => {
-    const response = await api.post("/order", data);
-
-    return response.data;
+const Create = async (order) => {
+    const {data} = await api.post("/order", order);
+    return data;
 }
 
-const List = async () => {
-    const response = await api.get("/order");
-
-    return response.data;
+const getOrders = async () => {
+    const {data} = await api.get("/order");
+    return data;
 }
 
-const MyOrders = async () => {
-    const response = await api.get("/order/my-orders");
-
-    return response.data;
+const getMyOrders = async () => {
+    const {data} = await api.get("/order/my-orders");
+    return data;
 }
 
 export default {
     Create,
-    List,
-    MyOrders,
+    getOrders,
+    getMyOrders,
 }

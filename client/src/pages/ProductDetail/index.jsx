@@ -1,53 +1,69 @@
-import {useLoaderData} from "react-router-dom";
-import {fetchProductDetail} from "../../apis/ProductAPI.js";
-import {Box, Text, Button, Flex, Grid, Heading, VStack} from "@chakra-ui/react";
+import {useParams} from "react-router-dom";
+import {useQuery} from "@tanstack/react-query";
 import ImageGallery from "react-image-gallery";
+import {Box, Text, Button, Grid, Heading, VStack} from "@chakra-ui/react";
 import {useBasket} from "../../contexts/BasketContext.jsx";
+import ProductAPI from "../../apis/ProductAPI.js";
+import {useEffect, useState} from "react";
 
-export async function loader({params}){
-    const product = await fetchProductDetail(params.productId);
-
-    if (!product) {
-        throw new Response("", {
-            status: 404,
-            statusText: "Not Found",
-        });
-    }
-
-    return { product };
+function useProduct(productId) {
+    return useQuery({
+        queryKey: ["product", productId],
+        queryFn: () => ProductAPI.getProductById(productId),
+        enabled: !!productId,
+    })
 }
 
-export default function ProductDetail(){
-    const {product} = useLoaderData();
+export default function ProductDetail() {
     const {addItem, removeItem, items} = useBasket();
 
-    let images;
-    if(product.photos.length > 0){
-        images = product.photos.map((url) => ({original: `http://localhost:3000${url}`}))
-    }
+    const {productId} = useParams();
 
-    const isInBasket = items.find(item => item._id === product._id);
+    const [productPhotos, setProductPhotos] = useState([]);
+
+    const {status, data, error, isFetching} = useProduct(productId);
+
+    useEffect(()=> {
+        if(status === "success"){
+            const photos = data.photos.map((url) => ({original: `http://localhost:3000${url}`}));
+            setProductPhotos(photos);
+        }
+    }, [status])
+
+    const isInBasket = items.find(item => item._id === data._id);
 
     return (
-        <Grid templateColumns="repeat(2, 1fr)" border="1px" borderColor="gray.300" borderRadius="lg">
-            <Box borderTopLeftRadius="lg" borderBottomLeftRadius="lg">
-                {
-                    images && (
-                        <ImageGallery items={images} />
-                    )
-                }
-            </Box>
-            <VStack align="start" spacing="16px" p="4" backgroundColor="gray.100" borderBottomRightRadius="lg" borderTopRightRadius="lg">
-                <Heading as="h4" size="md">{product.title}</Heading>
+        <div>
+            { status === "pending" ? (
+                "Loading..."
+            ) : status === "error" ? (
+                <span>Error: {error.message}</span>
+            ) : (
+                <>
+                    <Grid templateColumns="repeat(2, 1fr)" border="1px" borderColor="gray.300" borderRadius="lg">
+                        {productPhotos.length && (
+                            <Box borderTopLeftRadius="lg" borderBottomLeftRadius="lg">
+                                <ImageGallery items={productPhotos}/>
+                            </Box>
+                        )}
+                        <VStack align="start" spacing="16px" p="4" backgroundColor="gray.100"
+                                borderBottomRightRadius="lg"
+                                borderTopRightRadius="lg">
+                            <Heading as="h4" size="md">{data.title}</Heading>
 
-                <Text fontSize="xl" fontWeight="bold">{product.price} TL</Text>
+                            <Text fontSize="xl" fontWeight="bold">{data.price} TL</Text>
 
-                <Text>{product.description}</Text>
+                            <Text>{data.description}</Text>
 
-                <Button colorScheme={isInBasket ? "pink" : "green"} onClick={() => isInBasket ? removeItem(product) : addItem(product)}>
-                    {isInBasket ? "Remove from basket" : "Add to basket"}
-                </Button>
-            </VStack>
-        </Grid>
-    );
+                            <Button colorScheme={isInBasket ? "pink" : "green"}
+                                    onClick={() => isInBasket ? removeItem(data) : addItem(data)}>
+                                {isInBasket ? "Remove from basket" : "Add to basket"}
+                            </Button>
+                        </VStack>
+                    </Grid>
+                    <div>{isFetching ? 'Background Updating...' : ' '}</div>
+                </>
+            )}
+        </div>
+    )
 }

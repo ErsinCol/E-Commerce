@@ -1,27 +1,37 @@
-import {deleteProduct, fetchProductList} from "../../../apis/ProductAPI.js";
-import {Link, useLoaderData} from "react-router-dom";
+import ProductAPI from "../../../apis/ProductAPI.js";
+import {Link} from "react-router-dom";
 import {Heading} from "@chakra-ui/react";
 import {Table, Space, Popconfirm, Button, message} from "antd";
 import {useMemo} from "react";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 
-export async function loader(){
-    const products = await fetchProductList();
-
-    return {products};
+function useProducts(){
+    return useQuery({
+        queryKey: ["products"],
+        queryFn: ProductAPI.getProducts
+    })
 }
 
 export default function AdminProducts(){
-    const {products} = useLoaderData();
+    const queryClient = useQueryClient();
 
-    const handleDeleteProduct = async(id) => {
-        try{
-            const response = await deleteProduct(id);
-            message.success(response);
-        }catch (e) {
-            console.error(e);
-            message.error("Error. product not be deleted.")
+    const { status, data, error, isFetching } = useProducts();
+
+    const {mutate}  = useMutation({
+        mutationKey: ["deleteProduct"],
+        mutationFn: (id) => ProductAPI.deleteProduct(id),
+        onError : (error) => {
+            console.error(error);
+            message.error("Error. Product not be deleted.");
+        },
+        onSuccess : (data) => {
+            console.log(data);
+            message.success("Product successfully deleted.")
+        },
+        onSettled : async() => {
+            return await queryClient.invalidateQueries({queryKey: ["products"]});
         }
-    }
+    })
 
     const columns = useMemo(()=> {
         return [
@@ -52,7 +62,7 @@ export default function AdminProducts(){
                         <Popconfirm
                             title="Delete the product"
                             description="Are you sure to delete the product"
-                            onConfirm={() => handleDeleteProduct(_id)}
+                            onConfirm={() => mutate(_id)}
                             okText="Delete"
                             cancelText="Cancel"
                             placement="bottomRight"
@@ -66,10 +76,21 @@ export default function AdminProducts(){
     }, [])
 
     return (
-        <>
+        <div>
             <Heading as="h3" size="lg" my="4">Products</Heading>
 
-            <Table dataSource={products} columns={columns} rowKey="_id"></Table>
-        </>
+            <div>
+                { status === "pending" ? (
+                    "Loading..."
+                ) : status === "error" ? (
+                    <span>Error: {error.message}</span>
+                ) : (
+                    <>
+                        <Table dataSource={data} columns={columns} rowKey="_id"></Table>
+                        <div>{isFetching ? 'Background Updating...' : ' '}</div>
+                    </>
+                )}
+            </div>
+        </div>
     )
 }

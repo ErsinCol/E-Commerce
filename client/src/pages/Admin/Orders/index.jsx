@@ -1,51 +1,62 @@
-import OrderAPI from "../../../apis/OrderAPI.js";
-import {useLoaderData} from "react-router-dom";
+import {useQuery} from "@tanstack/react-query";
 import {
     Heading,
     Table,
     Thead,
     Tbody,
-    Tfoot,
     Tr,
     Th,
     Td,
     TableCaption,
     TableContainer,
 } from "@chakra-ui/react";
+import OrderAPI from "../../../apis/OrderAPI.js";
 
-export async function loader(){
-    const orders = await OrderAPI.List();
-
-    return {orders};
+function useOrders(){
+    return useQuery({
+        queryKey: ["admin-orders"],
+        queryFn: OrderAPI.getOrders,
+    })
 }
+
 export default function AdminOrders(){
-    const {orders} = useLoaderData();
+    const {data, status, error, isFetching} = useOrders();
 
     return (
-        <>
+        <div>
             <Heading as="h3" size="lg" my="4">Orders</Heading>
-
-            <TableContainer>
-                <Table variant="striped">
-                    <TableCaption>Orders List</TableCaption>
-                    <Thead>
-                        <Tr>
-                            <Th>User</Th>
-                            <Th>Address</Th>
-                            <Th isNumeric>Items</Th>
-                        </Tr>
-                    </Thead>
-                    <Tbody>
-                        {orders.map((order, index) => (
-                            <Tr key={index}>
-                                <Td>{order.user.email}</Td>
-                                <Td>{order.address}</Td>
-                                <Td isNumeric>{order.items.length}</Td>
-                            </Tr>
-                        ))}
-                    </Tbody>
-                </Table>
-            </TableContainer>
-        </>
+            <div>
+                { status === "pending" ? (
+                    "Loading..."
+                ) : status === "error" ? (
+                    <span>Error: {error.message}</span>
+                ) : (
+                    <>
+                        <TableContainer>
+                            <Table variant="striped">
+                                <TableCaption>Orders List</TableCaption>
+                                <Thead>
+                                    <Tr>
+                                        <Th>User</Th>
+                                        <Th>Address</Th>
+                                        <Th isNumeric>Items</Th>
+                                    </Tr>
+                                </Thead>
+                                <Tbody>
+                                    {data.map((order, index) => (
+                                        <Tr key={index}>
+                                            <Td>{order.user.email}</Td>
+                                            <Td>{order.address}</Td>
+                                            <Td isNumeric>{order.items.length}</Td>
+                                        </Tr>
+                                    ))}
+                                </Tbody>
+                            </Table>
+                        </TableContainer>
+                        <div>{isFetching ? 'Background Updating...' : ' '}</div>
+                    </>
+                )}
+            </div>
+        </div>
     )
 }

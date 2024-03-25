@@ -1,16 +1,22 @@
 import {api} from "./configs/axiosConfig.js";
 
-export const fetchProductList = async (pageParam= 1) => {
-    const response = await api.get(`/product?page=${pageParam}`);
-    return response.data;
+const getProducts = async (pageParam= 1) => {
+    const {data} = await api.get(`/product?page=${pageParam}`);
+    return data;
 }
 
-export const fetchProductDetail = async(id) => {
-    const response = await api.get(`/product/${id}`);
-    return response.data;
+const getProductById = async(productId) => {
+    const {data} = await api.get(`/product/${productId}`);
+    return data;
 }
 
-export const deleteProduct = async(id) => {
-    const response = await api.delete(`/product/${id}`);
-    return response.data;
+const deleteProduct = async(productId) => {
+    const {data} = await api.delete(`/product/${productId}`);
+    return data;
+}
+
+export default {
+    getProducts,
+    getProductById,
+    deleteProduct,
 }

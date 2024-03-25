@@ -1,34 +1,40 @@
-import {useLoaderData, useNavigation} from "react-router-dom";
+import {useQuery} from "@tanstack/react-query";
 import { Grid } from "@chakra-ui/react";
 import Card from "../../components/Card/index.jsx";
-import {fetchProductList} from "../../apis/ProductAPI.js";
+import ProductAPI from "../../apis/ProductAPI.js";
 
-export async function loader(){
-    const products = await fetchProductList();
-
-    return { products };
+function useProducts(){
+    return useQuery({
+        queryKey: ["products"],
+        queryFn: ProductAPI.getProducts
+    })
 }
 
-export default function Products(){
-    const {products} = useLoaderData();
+export default function Products() {
+    const { status, data, error, isFetching } = useProducts();
 
     return (
         <div id="products-page">
-            {
-                products.length ? (
+            { status === 'pending' ? (
+                'Loading...'
+            ) : status === 'error' ? (
+                    <span>Error: {error.message}</span>
+            ) : data.length ? (
+                <>
                     <Grid templateColumns="repeat(5, 1fr)" gap="4">
                         {
-                            products.map((product, index)=>(
-                                <Card product={product} key={index} />
+                            data.map((product, index) => (
+                                <Card product={product} key={index}/>
                             ))
                         }
                     </Grid>
-                ) : (
-                    <p>
-                        <i>No products</i>
-                    </p>
-                )
-            }
+                    <div>{isFetching ? 'Background Updating...' : ' '}</div>
+                </>
+            ) : (
+                <p>
+                    <i>No products</i>
+                </p>
+            )}
         </div>
     );
 }
