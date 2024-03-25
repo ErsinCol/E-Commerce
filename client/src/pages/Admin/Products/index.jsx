@@ -1,7 +1,7 @@
 import ProductAPI from "../../../apis/ProductAPI.js";
 import {Link, Outlet} from "react-router-dom";
-import {Heading} from "@chakra-ui/react";
-import {Table, Space, Popconfirm, Button, message} from "antd";
+import {Heading, Flex, Box, Button} from "@chakra-ui/react";
+import {Table, Space, Popconfirm, message} from "antd";
 import {useMemo} from "react";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {formatDate} from "../../../utils/formatDate.js";
@@ -63,7 +63,7 @@ export default function AdminProducts(){
                 render: (_, {_id}) => (
                     <Space>
                         <Link to={`/admin/product/${_id}`}>
-                            <Button>Edit</Button>
+                            <Button size="sm">Edit</Button>
                         </Link>
 
                         <Popconfirm
@@ -74,7 +74,7 @@ export default function AdminProducts(){
                             cancelText="Cancel"
                             placement="bottomRight"
                         >
-                            <Button danger>Delete</Button>
+                            <Button size="sm" colorScheme="red">Delete</Button>
                         </Popconfirm>
                     </Space>
                 )
@@ -84,7 +84,12 @@ export default function AdminProducts(){
 
     return (
         <div>
-            <Heading as="h3" size="lg" my="4">Products</Heading>
+            <Flex justifyContent="space-between" alignItems="center" py="4">
+                <Heading size="md">Products</Heading>
+                <Link to="/admin/products/new">
+                    <Button colorScheme="blue" size="sm">New</Button>
+                </Link>
+            </Flex>
 
             <div>
                 { status === "pending" ? (

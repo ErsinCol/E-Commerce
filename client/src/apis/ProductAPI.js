@@ -20,9 +20,15 @@ const updateProduct = async(productId, updatedValues)=> {
     return data;
 }
 
+const createProduct = async(input)=>{
+    const {data} = await api.post("/product", input);
+    return {data};
+}
+
 export default {
     getProducts,
     getProductById,
     deleteProduct,
     updateProduct,
+    createProduct,
 }

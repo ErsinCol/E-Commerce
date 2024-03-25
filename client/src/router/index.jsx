@@ -15,6 +15,7 @@ import AdminHome from "../pages/Admin/Home/index.jsx";
 import AdminOrders from "../pages/Admin/Orders/index.jsx";
 import AdminProducts from "../pages/Admin/Products/index.jsx";
 import AdminProductDetail from "../pages/Admin/ProductDetail/index.jsx";
+import AddNewProduct from "../pages/Admin/AddNewProduct/index.jsx";
 
 const router = createBrowserRouter([
     {
@@ -62,6 +63,10 @@ const router = createBrowserRouter([
                     {
                         path: "products",
                         element: <AdminProducts />,
+                    },
+                    {
+                        path: "products/new",
+                        element: <AddNewProduct />
                     },
                     {
                         path: "product/:productId",
