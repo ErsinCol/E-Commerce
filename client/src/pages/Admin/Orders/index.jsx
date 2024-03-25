@@ -12,15 +12,15 @@ import {
 } from "@chakra-ui/react";
 import OrderAPI from "../../../apis/OrderAPI.js";
 
-function useOrders(){
+function useAdminOrders(){
     return useQuery({
-        queryKey: ["admin-orders"],
+        queryKey: ["admin:orders"],
         queryFn: OrderAPI.getOrders,
     })
 }
 
 export default function AdminOrders(){
-    const {data, status, error, isFetching} = useOrders();
+    const {data, status, error, isFetching} = useAdminOrders();
 
     return (
         <div>

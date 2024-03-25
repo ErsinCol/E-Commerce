@@ -1,13 +1,15 @@
 import ProductAPI from "../../../apis/ProductAPI.js";
-import {Link} from "react-router-dom";
+import {Link, Outlet} from "react-router-dom";
 import {Heading} from "@chakra-ui/react";
 import {Table, Space, Popconfirm, Button, message} from "antd";
 import {useMemo} from "react";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
+import {formatDate} from "../../../utils/formatDate.js";
+import {formatMoney} from "../../../utils/formatMoney.js";
 
-function useProducts(){
+function useAdminProducts(){
     return useQuery({
-        queryKey: ["products"],
+        queryKey: ["admin:products"],
         queryFn: ProductAPI.getProducts
     })
 }
@@ -15,7 +17,7 @@ function useProducts(){
 export default function AdminProducts(){
     const queryClient = useQueryClient();
 
-    const { status, data, error, isFetching } = useProducts();
+    const { status, data, error, isFetching } = useAdminProducts();
 
     const {mutate}  = useMutation({
         mutationKey: ["deleteProduct"],
@@ -43,19 +45,24 @@ export default function AdminProducts(){
             {
                 title: "Price",
                 dataIndex: "price",
-                key: "price"
+                key: "price",
+                render: (amount) => {
+                    const formattedMount = formatMoney(amount);
+                    return `${formattedMount} TL`;
+                }
             },
             {
                 title: "Created At",
                 dataIndex: "createdAt",
-                key: "createdAt"
+                key: "createdAt",
+                render: (text) => formatDate(text),
             },
             {
                 title: "Action",
                 key: "action",
                 render: (_, {_id}) => (
                     <Space>
-                        <Link to={`/admin/products/${_id}`}>
+                        <Link to={`/admin/product/${_id}`}>
                             <Button>Edit</Button>
                         </Link>
 
@@ -87,6 +94,7 @@ export default function AdminProducts(){
                 ) : (
                     <>
                         <Table dataSource={data} columns={columns} rowKey="_id"></Table>
+                        <Outlet />
                         <div>{isFetching ? 'Background Updating...' : ' '}</div>
                     </>
                 )}
