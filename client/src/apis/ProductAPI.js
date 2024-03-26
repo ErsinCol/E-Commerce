@@ -1,7 +1,7 @@
 import {api} from "./configs/axiosConfig.js";
 
-const getProducts = async (pageParam= 1) => {
-    const {data} = await api.get(`/product?page=${pageParam}`);
+const getProducts = async (page = 1) => {
+    const {data} = await api.get(`/product?page=${page}`);
     return data;
 }
 

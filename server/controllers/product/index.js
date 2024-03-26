@@ -10,9 +10,15 @@ const GetList = async (req, res, next)=>{
     const skip = (parseInt(page) - 1) * limit;
 
     try{
+        const totalProducts = await Product.countDocuments();
         const products = await Product.find({}, { __v: 0 }).sort({createdAt: -1}).skip(skip).limit(limit);
 
-        res.status(200).json(products);
+        const hasMore = totalProducts > (parseInt(page) * limit)
+
+        res.status(200).json({
+            products,
+            hasMore
+        });
     }catch(e){
         next(e);
     }
