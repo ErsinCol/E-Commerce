@@ -37,29 +37,12 @@ const Get = async(req, res, next) =>{
 const Create = async(req, res, next)=>{
     try{
         const input = req.body;
-        const photos = req.files?.photos;
 
-        const photoUrls = photos?.map(photo => `/product/photos/${photo.name}`)
-        const payload = {
-            ...input,
-            photos: photoUrls || [],
-        }
-
-        const {error} = Schemas.Create.validate(payload);
+        const {error} = Schemas.Create.validate(input);
 
         if(error) return res.status(400).send(error.details[0].message);
 
-        photos?.forEach((photo)=>{
-            const uploadPath = `${global.appRoot}/public/images/product/${photo.name}`;
-            photo.mv(uploadPath, function (err){
-                if(err){
-                    return res.status(500).send(err);
-                }
-            })
-        })
-
-
-        const product = new Product(payload);
+        const product = new Product(input);
         const savedData = await product.save();
 
         res.status(201).json(savedData);

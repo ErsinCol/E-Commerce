@@ -74,7 +74,7 @@ router.get('/:productId', product.Get);
  *          requestBody:
  *              required: true
  *              content:
- *                  multipart/form-data:
+ *                  application/json:
  *                      schema:
  *                          type: object
  *                          required:
@@ -91,9 +91,6 @@ router.get('/:productId', product.Get);
  *                                  type: array
  *                                  items:
  *                                      type: string
- *                                      format: binary
- *
- *
  *          responses:
  *              '201':
  *                  description: Product created successfully.
