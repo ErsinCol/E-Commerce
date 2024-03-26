@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
-import {Image, Button, Box, Text, Heading, Center} from "@chakra-ui/react";
+import {Image, Button, Box, Text, Heading, Center, Flex} from "@chakra-ui/react";
 import {Link} from "react-router-dom";
-import {formatDate} from "../../utils/formatDate.js";
 import {useBasket} from "../../contexts/BasketContext.jsx";
+import {formatMoney} from "../../utils/formatMoney.js";
 
 export default function Card({product}){
     const {addItem, removeItem, items} = useBasket();
@@ -12,16 +12,18 @@ export default function Card({product}){
     return (
         <Box borderWidth="1px" borderRadius="lg" borderColor="#e2e8f0" borderStyle="solid" overflow="hidden" p="4">
             <Link to={`/product/${product._id}`}>
-                <Image src={`http://localhost:3000${product.photos[0]}`} alt="product-photo" width="100%" height="150px" objectFit="contain" fallbackSrc='https://via.placeholder.com/150'/>
-                <Box mt="4">
-                    <Heading as="h5" size="sm" whiteSpace="nowrap" overflow="hidden" textOverflow="ellipsis">
-                        {product.title}
-                    </Heading>
+                <Flex direction="column" alignItems="center" justifyContent="center">
+                    <Image src={product.photos[0]} alt="product-photo" boxSize="150px" objectFit="cover" fallbackSrc='https://via.placeholder.com/150'/>
+                    <Box mt="4">
+                        <Heading as="h5" size="sm" whiteSpace="nowrap" overflow="hidden" textOverflow="ellipsis">
+                            {product.title}
+                        </Heading>
 
-                    <Text>{product.price} TL</Text>
-                </Box>
+                        <p style={{textAlign: "center"}}>{formatMoney(product.price)} TL</p>
+                    </Box>
+                </Flex>
             </Link>
-            <Center mt="8">
+            <Center mt="2">
                 <Button onClick={()=> isInBasket ? removeItem(product) : addItem(product)} colorScheme={isInBasket ? "pink" : "green"}>{isInBasket ? "Remove from basket" : "Add to basket"}</Button>
             </Center>
         </Box>

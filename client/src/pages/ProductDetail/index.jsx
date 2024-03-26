@@ -1,10 +1,10 @@
+import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import {useQuery} from "@tanstack/react-query";
 import ImageGallery from "react-image-gallery";
 import {Box, Text, Button, Grid, Heading, VStack} from "@chakra-ui/react";
 import {useBasket} from "../../contexts/BasketContext.jsx";
 import ProductAPI from "../../apis/ProductAPI.js";
-import {useEffect, useState} from "react";
 
 function useProduct(productId) {
     return useQuery({
@@ -25,7 +25,7 @@ export default function ProductDetail() {
 
     useEffect(()=> {
         if(status === "success"){
-            const photos = data.photos.map((url) => ({original: `http://localhost:3000${url}`}));
+            const photos = data.photos.map((url) => ({original: url}));
             setProductPhotos(photos);
         }
     }, [status])
