@@ -1,6 +1,6 @@
 import {useParams, useNavigate} from "react-router-dom";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import {Formik} from "formik";
+import {FieldArray, Formik} from "formik";
 import {message} from "antd";
 import {
     FormControl,
@@ -10,14 +10,17 @@ import {
     Box,
     Button,
     Flex,
-    Textarea
+    Textarea,
+    Text,
+    IconButton,
 } from "@chakra-ui/react";
 import ProductAPI from "../../../apis/ProductAPI.js";
 import {EditSchema} from "./validation.js";
+import {DeleteIcon} from "@chakra-ui/icons";
 
 function useAdminProductDetail(productId){
     return useQuery({
-        queryKey: ["admin:product", productId],
+        queryKey: ["admin", "product", productId],
         queryFn: () => ProductAPI.getProductById(productId),
         enabled: !!productId,
     })
@@ -42,8 +45,8 @@ export default function AdminProductDetail(){
         onSuccess : () => {
             message.success("Product successfully updated.")
         },
-        onSettled : async() => {
-            return await queryClient.invalidateQueries({queryKey: ["admin:product", productId]});
+        onSettled : () => {
+            queryClient.invalidateQueries({queryKey: [productId]});
         }
     })
 
@@ -62,6 +65,7 @@ export default function AdminProductDetail(){
                             title: data.title,
                             description: data.description,
                             price: data.price,
+                            photos: data.photos,
                         }}
                         validationSchema={EditSchema}
                         onSubmit={handleSubmit}
@@ -111,6 +115,51 @@ export default function AdminProductDetail(){
                                         disabled={isSubmitting}
                                     />
                                 </FormControl>
+
+                                <Box mb="4">
+                                    <Text fontWeight="500" my="1">Photos</Text>
+                                    <FieldArray name="photos">
+                                        {
+                                            ({remove, push}) => (
+                                                <div>
+                                                    {values.photos.length > 0 && (
+                                                        values.photos.map((photo, index) => (
+                                                            <Flex key={index} mb="3" gap="1">
+                                                                <Input
+                                                                    name={`photos.${index}`}
+                                                                    placeholder="Product photo url"
+                                                                    value={values.photos[index]}
+                                                                    onBlur={handleBlur}
+                                                                    onChange={handleChange}
+                                                                    isInvalid={errors.photos && errors.photos[index] && touched.photos && touched.photos[index]}
+                                                                    disabled={isSubmitting}
+                                                                />
+                                                                <IconButton
+                                                                    aria-label='Delete photo'
+                                                                    icon={<DeleteIcon/>}
+                                                                    colorScheme="red"
+                                                                    variant="outline"
+                                                                    type="button"
+                                                                    onClick={() => remove(index)}
+                                                                >
+                                                                    Delete
+                                                                </IconButton>
+                                                            </Flex>
+                                                        ))
+                                                    )}
+                                                    <Button
+                                                        colorScheme="blue"
+                                                        size="sm"
+                                                        onClick={() => push("")}
+                                                        my="1"
+                                                    >
+                                                        Add
+                                                    </Button>
+                                                </div>
+                                            )
+                                        }
+                                    </FieldArray>
+                                </Box>
 
                                 <Flex align="center" justify="end" gap="2" my="4">
                                     <Button variant="outline" type="button" onClick={() => navigate(-1)}>Cancel</Button>

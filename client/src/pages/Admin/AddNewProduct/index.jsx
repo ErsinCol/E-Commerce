@@ -39,8 +39,8 @@ export default function AddNewProduct(){
 
             navigate("/admin/products");
         },
-        onSettled: async () => {
-            return await queryClient.invalidateQueries({queryKey: ["admin:products"]});
+        onSettled: () => {
+            queryClient.invalidateQueries({queryKey: ["products"]});
         }
     })
 

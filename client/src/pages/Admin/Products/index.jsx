@@ -9,7 +9,7 @@ import {formatMoney} from "../../../utils/formatMoney.js";
 
 function useAdminProducts(){
     return useQuery({
-        queryKey: ["admin:products"],
+        queryKey: ["admin" , "products"],
         queryFn: ProductAPI.getProducts
     })
 }
@@ -30,8 +30,8 @@ export default function AdminProducts(){
             console.log(data);
             message.success("Product successfully deleted.")
         },
-        onSettled : async() => {
-            return await queryClient.invalidateQueries({queryKey: ["products"]});
+        onSettled : () => {
+           queryClient.invalidateQueries({queryKey: ["products"]});
         }
     })
 
