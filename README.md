@@ -3,7 +3,7 @@
 ## Used Technologies
 
 ### Frontend
-- **Vite** for local dev server adn generate project template.
+- **Vite** for local dev server and generate project template.
 - **React** for create a user interface
 - **React-Router-Dom** for manage client-side routing.
 - **React-Query** for server state management.
