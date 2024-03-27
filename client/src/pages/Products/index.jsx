@@ -1,5 +1,5 @@
 import {useInfiniteQuery} from "@tanstack/react-query";
-import {Button, Flex, Grid} from "@chakra-ui/react";
+import {Box, Button, Flex, Grid} from "@chakra-ui/react";
 import Card from "../../components/Card/index.jsx";
 import ProductAPI from "../../apis/ProductAPI.js";
 import React from "react";
@@ -34,7 +34,7 @@ export default function Products() {
                                 </React.Fragment>
                             ))}
                         </Grid>
-                        <Flex my="4" justifyContent="end">
+                        <Flex my="4" justifyContent="end" position="fixed" bottom="0" right="0" width="full">
                             <Button
                                 onClick={() => fetchNextPage()}
                                 isDisabled={!hasNextPage || isFetchingNextPage}

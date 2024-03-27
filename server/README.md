@@ -1,3 +1,5 @@
+# Backend
+
 ## Auth Endpoints
 
 | Endpoint              | Description                | Methods |

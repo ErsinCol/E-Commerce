@@ -31,7 +31,7 @@ export default function AdminProducts(){
             message.success("Product successfully deleted.")
         },
         onSettled : () => {
-           queryClient.invalidateQueries({queryKey: ["products"]});
+           queryClient.invalidateQueries({queryKey: ["admin", "products"]});
         }
     })
 
@@ -98,7 +98,7 @@ export default function AdminProducts(){
                     <span>Error: {error.message}</span>
                 ) : (
                     <>
-                        <Table dataSource={data} columns={columns} rowKey="_id"></Table>
+                        <Table dataSource={data.products} columns={columns} rowKey="_id"></Table>
                         <Outlet />
                         <div>{isFetching ? 'Background Updating...' : ' '}</div>
                     </>

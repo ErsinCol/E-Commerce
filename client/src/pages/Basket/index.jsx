@@ -91,7 +91,7 @@ export default function Basket(){
                                 <ListItem key={index} border="1px solid #e2e8f0" borderRadius="md" padding="4" marginBottom="4">
                                     <Link to={`/product/${item._id}`}>
                                         <Flex gap={4}>
-                                            <Image boxSize="100px" objectFit="cover" src={`http://localhost:3000${item.photos[0]}`} alt={item.title} />
+                                            <Image boxSize="100px" objectFit="cover" src={item.photos[0]} alt={item.title} />
                                             <Flex flex="1" flexDir="column" justifyContent="center">
                                                 <Box>
                                                     <Text>{item.title}</Text>
@@ -148,6 +148,7 @@ export default function Basket(){
                                     colorScheme="blue"
                                     isDisabled={address === ""}
                                     onClick={handleSubmit}
+                                    mr="1"
                                 >
                                     Save
                                 </Button>

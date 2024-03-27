@@ -14,7 +14,7 @@ import OrderAPI from "../../../apis/OrderAPI.js";
 
 function useAdminOrders(){
     return useQuery({
-        queryKey: ["admin:orders"],
+        queryKey: ["admin", "orders"],
         queryFn: OrderAPI.getOrders,
     })
 }

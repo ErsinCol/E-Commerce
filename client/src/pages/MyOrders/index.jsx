@@ -5,7 +5,7 @@ import {useQuery} from "@tanstack/react-query";
 
 function useMyOrders(){
     return useQuery({
-        queryKey: ["my-orders"],
+        queryKey: ["orders"],
         queryFn: OrderAPI.getMyOrders
     })
 }
